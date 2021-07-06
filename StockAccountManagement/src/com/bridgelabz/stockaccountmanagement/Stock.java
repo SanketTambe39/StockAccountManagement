@@ -4,8 +4,18 @@ public class Stock {
 
 	private String stockName; 
 	private  int  numberofShare; 
-	private double sharePrice;
-	
+	private double pricePerShare;
+	private String stockSymbol;
+
+	public String getStockSymbol() {
+		return stockSymbol;
+	}
+	public void setStockSymbol(String stockSymbol) {
+		this.stockSymbol = stockSymbol;
+	}
+	public double getPricePerShare() {
+		return pricePerShare;
+	}
 	public String getStockName() {
 		return stockName;
 	}
@@ -25,23 +35,14 @@ public class Stock {
 			System.err.println("Number of shares cannot be less than 1");
 		}
 	}
-	public double getSharePrice() {
-		return sharePrice;
-	}
-	public void setSharePrice(double sharePrice) {
-		if (sharePrice > 0) 
-		{			
-			this.sharePrice = sharePrice;
-		}
-		else
-		{
-			System.err.println(" Share Price cannot be less than 1");
-		}
+	public void setPricePerShare(double pricePerShare) {
+		this.pricePerShare = pricePerShare;
 	}
 	@Override
 	public String toString() {
-		return "Stock [stockName=" + stockName + ", numberofShare=" + numberofShare + ", sharePrice=" + sharePrice
-				+ "]";
+		return "Stock [stockName=" + stockName + ", numberofShare=" + numberofShare + ", pricePerShare=" + pricePerShare
+				+ ", stockSymbol=" + stockSymbol + "]";
 	}
+	
 	
 }

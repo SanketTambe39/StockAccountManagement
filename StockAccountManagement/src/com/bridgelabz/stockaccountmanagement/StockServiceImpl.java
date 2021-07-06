@@ -1,10 +1,12 @@
 package com.bridgelabz.stockaccountmanagement;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class StockServiceImpl implements StockService {
 
 	LinkedList <Stock> stockslist = new LinkedList<Stock>();
+	Stack<String> stockTransaction = new Stack<String>();
 
 	@Override
 	public void addStock(Stock stock)
@@ -15,9 +17,10 @@ public class StockServiceImpl implements StockService {
 		}
 		else
 		{
-
 			stockslist.add(stock);
 			System.out.println(stock.getStockName() +" Added sucessfully");
+			String transaction = "Purchased : The "+ stock.getNumberofShare() +" of stock "+stock.getStockSymbol();
+			stockTransaction.push(transaction);
 		}
 	}
 	private boolean ItemAlreadyPresent(Stock stock)
@@ -43,7 +46,6 @@ public class StockServiceImpl implements StockService {
 		{
 			System.out.println((i++)+") "+stocks);
 		}
-
 	}
 
 	@Override
@@ -63,7 +65,6 @@ public class StockServiceImpl implements StockService {
 		{
 			System.out.println("Stock not found");			
 		}
-
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class StockServiceImpl implements StockService {
 	{
 		for (Stock stocks : stockslist) 
 		{
-			System.out.println("value of "+stocks.getStockName()+" is "+( stocks.getNumberofShare()*stocks.getSharePrice() ) );
+			System.out.println("value of "+stocks.getStockName()+" is "+( stocks.getNumberofShare()*stocks.getPricePerShare() ) );
 		}
 
 	}
@@ -83,10 +84,71 @@ public class StockServiceImpl implements StockService {
 
 		for (Stock stocks : stockslist) 
 		{
-			totalValue += stocks.getNumberofShare()*stocks.getSharePrice();
+			totalValue += stocks.getNumberofShare()*stocks.getPricePerShare();
 		}
 		System.out.println("Total values of all stocks are "+totalValue);
+	}
+	@Override
+	public void buyStocks(int amount , String symbol) 
+	{
+		boolean checkItem = false;
+		for (Stock stocks : stockslist)
+		{
+			if (stocks.getStockSymbol().equals(symbol))
+			{	
+				stocks.setNumberofShare(stocks.getNumberofShare()+amount);
+				String transaction = "Purchased :  The "+ amount +" of stock "+stocks.getStockSymbol();
+				stockTransaction.push(transaction);
+				checkItem = true;
+			}
+		}
+		if(checkItem)
+		{
+			System.out.println("The "+ amount +" stock of "+symbol +" purchased successfully");			
+		}
+		else
+		{
+			System.out.println("stock not found try adding your stock using add stock");
+		}
 
 	}
-	
+	@Override
+	public void sellStocks(String symbol,int amount) {
+		boolean checkItemRemoved = false;
+		String transaction = null;
+		for (Stock stocks : stockslist)
+		{
+			if (stocks.getStockSymbol().equals(symbol))
+			{
+				if(stocks.getNumberofShare() - amount > 0)
+				{					
+					stocks.setNumberofShare(stocks.getNumberofShare() - amount);
+					transaction = "Sold : The "+ amount +" of stock "+stocks.getStockSymbol();
+				}
+				else if (stocks.getNumberofShare() - amount == 0) 
+				{
+					transaction = "Sold : The "+ amount +" of stock "+stocks.getStockSymbol();
+					stockslist.remove(stocks);
+				}
+				checkItemRemoved = true;
+			}
+		}
+		if(checkItemRemoved)
+		{
+			System.out.println("The "+ amount +" stock of "+symbol +" sold successfully");
+			stockTransaction.push(transaction);
+		}
+		else
+		{
+			System.out.println("stock not selled because you dont have enough shares");
+		}
+	}
+	@Override
+	public void getTrasaction() 
+	{
+		for (String trasaction : stockTransaction)
+		{
+			System.out.println(trasaction);
+		}
+	}
 }

@@ -7,4 +7,7 @@ public interface StockService {
 	public void getDetailsByName(String stockName);
 	public void calculateValueOfEachItem();
 	public void getTotalValue();
+	public void buyStocks(int amount , String symbol);
+	public void sellStocks(String sellStocks,int amount);
+	public void getTrasaction();
 }
