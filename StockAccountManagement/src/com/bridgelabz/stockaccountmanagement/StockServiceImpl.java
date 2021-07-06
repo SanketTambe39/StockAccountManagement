@@ -1,12 +1,15 @@
 package com.bridgelabz.stockaccountmanagement;
 
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class StockServiceImpl implements StockService {
 
 	LinkedList <Stock> stockslist = new LinkedList<Stock>();
 	Stack<String> stockTransaction = new Stack<String>();
+	Queue<String> stockTimeStamp = new LinkedList<String>();
 
 	@Override
 	public void addStock(Stock stock)
@@ -21,6 +24,7 @@ public class StockServiceImpl implements StockService {
 			System.out.println(stock.getStockName() +" Added sucessfully");
 			String transaction = "Purchased : The "+ stock.getNumberofShare() +" of stock "+stock.getStockSymbol();
 			stockTransaction.push(transaction);
+			stockTimeStamp.add(transaction +" at " +getCurrentTime());
 		}
 	}
 	private boolean ItemAlreadyPresent(Stock stock)
@@ -124,11 +128,13 @@ public class StockServiceImpl implements StockService {
 				{					
 					stocks.setNumberofShare(stocks.getNumberofShare() - amount);
 					transaction = "Sold : The "+ amount +" of stock "+stocks.getStockSymbol();
+					checkItemRemoved = true;
 				}
 				else if (stocks.getNumberofShare() - amount == 0) 
 				{
 					transaction = "Sold : The "+ amount +" of stock "+stocks.getStockSymbol();
 					stockslist.remove(stocks);
+					checkItemRemoved = true;
 				}
 				checkItemRemoved = true;
 			}
@@ -137,6 +143,7 @@ public class StockServiceImpl implements StockService {
 		{
 			System.out.println("The "+ amount +" stock of "+symbol +" sold successfully");
 			stockTransaction.push(transaction);
+			stockTimeStamp.add(transaction +" at " +getCurrentTime());
 		}
 		else
 		{
@@ -150,5 +157,19 @@ public class StockServiceImpl implements StockService {
 		{
 			System.out.println(trasaction);
 		}
+	}
+	@Override
+	public void getTimestamp() 
+	{  
+		for (String timestamp : stockTimeStamp)
+		{
+			System.out.println(timestamp);
+		}
+	}
+	public Date getCurrentTime()
+	{
+		long millis=System.currentTimeMillis();  
+		Date date=new Date(millis);
+		return date;
 	}
 }

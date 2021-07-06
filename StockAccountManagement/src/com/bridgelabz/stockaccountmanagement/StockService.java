@@ -10,4 +10,5 @@ public interface StockService {
 	public void buyStocks(int amount , String symbol);
 	public void sellStocks(String sellStocks,int amount);
 	public void getTrasaction();
+	public void getTimestamp();
 }
